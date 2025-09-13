@@ -2,5 +2,5 @@
 
 import '../api_service.dart';
 class SigninService extends ApiService {
-  SigninService() : super(baseUrl: 'http://10.224.155.245:8000/api/v1/login');
+  SigninService() : super(baseUrl: 'http://10.144.25.245:8000/api/v1/login');
 }

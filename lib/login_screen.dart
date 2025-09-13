@@ -47,13 +47,18 @@ class _LoginScreenState extends State<LoginScreen> {
         return;
       }
 
-      // حفظ البيانات في SharedPreferences
+      // ✅ حفظ البيانات في SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', data['token']);
-      await prefs.setString('role', data['role'].toString());
+      await prefs.setInt('role', data['role']);
+      await prefs.setInt('user_id', data['user']['id'] ?? 0);
       await prefs.setString('name', data['user']['name'] ?? '');
       await prefs.setString('phone', data['user']['phone'] ?? '');
-      await prefs.setInt('user_id', data['user']['id']);
+      await prefs.setString('email', data['user']['email'] ?? '');
+      await prefs.setString('image', data['user']['image'] ?? '');
+      await prefs.setString('address', data['user']['address'] ?? '');
+      await prefs.setBool('is_approved', data['user']['is_approved'] ?? false);
+      await prefs.setBool('is_active', data['user']['is_active'] ?? false);
       await prefs.setBool('hasLoggedOut', false);
 
       // ✅ رسالة نجاح
@@ -78,12 +83,12 @@ class _LoginScreenState extends State<LoginScreen> {
       } else if (role == 1) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) =>  DriverHomePage(phone: '',)), // دليفري
+          MaterialPageRoute(builder: (_) => DriverHomePage(phone: data['user']['phone'] ?? '')), // دليفري
         );
       } else if (role == 2) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) =>  Home_shope(phone: '',)), // محل
+          MaterialPageRoute(builder: (_) => Home_shope(phone: data['user']['phone'] ?? '')), // محل
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -120,7 +125,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-
         resizeToAvoidBottomInset: false,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -157,7 +161,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 16),
                   const Text(
                     "أهلاً بعودتك!",
@@ -224,7 +227,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                   ),
-
                   const SizedBox(height: 10),
                   TextButton(
                     onPressed: () {
